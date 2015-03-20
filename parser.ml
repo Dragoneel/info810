@@ -1,9 +1,12 @@
 open Ast
 
+
+let parser ident = i:''[a-zA-Z][a-zA-Z0-9]*'' -> {name=i}
+
 (* Atom *)
 let parser atom = 
 	|  '"' - s:''[^"]*'' - '"'  -> String s
-	|  string: ''[a-zA-Z][a-zA-Z0-9]*''  -> Variable({name=string})
+	|  id: ident   -> Variable(id)
 	|  integer: ''[0-9]+'' -> Integer(int_of_string(integer))
 	(* |  float: ''[-+]?[0-9]*\.?[0-9]*'' -> Float(float) *)
 
@@ -16,22 +19,29 @@ let parser expression =
 (* Instruction *)
 let parser instruction =
 	| ls:expression -> Top_ls(ls)
-	| "( defun "
-    	  name: string 
-   		  args: {"(" i:ident is:{ " " i':ident -> i'}* ")"     -> i::is}?[[]]
+	| "(" "defun"
+    	  name: ident 
+   		  "(" params:ident* ")"
    		  body: expression 
    	   ")"
-		-> Def(name,args,body)
+		-> Def({name;params;body})
 
 (* Top level *)
-(* let parser program = 
-	| "(" es:expression* ")" -> Liste(es) 
-    | "( defun "
-    	  name: string 
-   		  args: {"(" i:ident is:{ " " i':ident -> i'}* ")"     -> i::is}?[[]]
-   		  body: expression 
-   	   ")"
-		-> Def(name,args,body) *)
+let parser programm = 
+	| inst:instruction*
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

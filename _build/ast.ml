@@ -11,7 +11,7 @@ type expression =
 	| Atom of atom
 	| Quote of expression
 
-type def = { name : string;     
+type def = { name : ident;     
              params : ident list;
              body: expression
             }
