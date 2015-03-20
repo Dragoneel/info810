@@ -1,2 +1,14 @@
 ### Starting build.
-# Compilation successful.
+# Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, package(decap), quiet }
+/usr/bin/ocamldep.opt -pp pa_ocaml -modules parser.ml > parser.ml.depends
+# Target: ast.ml.depends, tags: { extension:ml, file:ast.ml, ocaml, ocamldep, package(decap), quiet }
+/usr/bin/ocamldep.opt -pp pa_ocaml -modules ast.ml > ast.ml.depends # cached
+# Target: ast.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:ast.cmo, file:ast.ml, implem, ocaml, package(decap), quiet }
+/usr/bin/ocamlc.opt -c -I /usr/lib/ocaml -I /usr/lib/ocaml/decap -pp pa_ocaml -o ast.cmo ast.ml # cached
+# Target: parser.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:parser.cmo, file:parser.ml, implem, ocaml, package(decap), quiet }
+/usr/bin/ocamlc.opt -c -I /usr/lib/ocaml -I /usr/lib/ocaml/decap -pp pa_ocaml -o parser.cmo parser.ml
++ /usr/bin/ocamlc.opt -c -I /usr/lib/ocaml -I /usr/lib/ocaml/decap -pp pa_ocaml -o parser.cmo parser.ml
+File "parser.ml", line 23, characters 13-19:
+Error: Unbound value machin
+Command exited with code 2.
+# Compilation unsuccessful.

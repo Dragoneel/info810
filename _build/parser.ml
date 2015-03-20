@@ -1,28 +1,28 @@
-open ast
+open Ast
 
 (* Atom *)
 let parser atom = 
 	|  '"' - s:''[^"]*'' - '"'  -> String s
 	|  string: ''[a-zA-Z][a-zA-Z0-9]*''  -> Variable({name=string})
-	|  integer: ''[0-9]+'' -> Integer(integer)
-	|  float: ''[-+]?[0-9]*\.?[0-9]*'' -> Float(float)
-
-(* Quote (Not eval) *)
-let parser quote = 
-	| expression: '"' ^ expression -> Quote(expression)
-
-(* List *)
-(* let parser cons = 
-	| Empty 	
-	-> []
-	| Cons: "(" i:cons is:{ " " i':cons -> i'}* ")"
-		-> i *)
+	|  integer: ''[0-9]+'' -> Integer(int_of_string(integer))
+	(* |  float: ''[-+]?[0-9]*\.?[0-9]*'' -> Float(float) *)
 
 (* Expression *)
+let parser expression =
+	| a:atom -> Atom(a)
+	| "'" e:expression -> Quote(e)
+	| "(" es:expression* ")" -> Liste(es)
+
+(* Instruction *)
+
+
+(* Top level *)
 let parser prog = 
-    | "(" name:string 
-   		  args: {"(" i:params is:{ "," i':params -> i'}* ")"     -> i::is}?[[]]
-   		  body:expression 
+	| "(" es:expression* ")" -> Liste(es) 
+    | "( defun "
+    	  name: machin
+   		  args: {"(" i:ident is:{ "," i':ident -> i'}* ")"     -> i::is}?[[]]
+   		  body: expression 
    	   ")"
 		-> Def(name,args,body)
 
@@ -42,7 +42,16 @@ let parser prog =
 
 
 
+(* and expression_list =
+  EMPTY -> []
+| e:expression es:expression_list -> e::es *)
 
+(* List *)
+(* let parser cons = 
+	| Empty 	
+	-> []
+	| Cons: "(" i:cons is:{ " " i':cons -> i'}* ")"
+		-> i *)
 
 
 
