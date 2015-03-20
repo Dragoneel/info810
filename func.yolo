@@ -1,0 +1,11 @@
+!! Simple variable
+( set i 1)
+( print i )
+
+
+!! List sample
+( set i '(1 2 3) )
+( print i )
+
+!! Function sample
+(defun f(a) (+ a a))
