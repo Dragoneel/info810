@@ -18,10 +18,10 @@ let parser quote =
 	| Cons: "(" i:cons is:{ " " i':cons -> i'}* ")"
 		-> i *)
 
-(* Top level *)
+(* Expression *)
 let parser prog = 
     | "(" name:string 
-   		  args: {"(" i:ident is:{ "," i':ident -> i'}* ")"     -> i::is}?[[]]
+   		  args: {"(" i:params is:{ "," i':params -> i'}* ")"     -> i::is}?[[]]
    		  body:expression 
    	   ")"
 		-> Def(name,args,body)
