@@ -7,22 +7,17 @@ let parser atom =
 	|  integer: ''[0-9]+'' -> Integer(integer)
 	|  float: ''[-+]?[0-9]*\.?[0-9]*'' -> Float(float)
 
-(* Quote (Not eval) *)
-let parser quote = 
-	| expression: '"' ^ expression -> Quote(expression)
-
-(* List *)
-(* let parser cons = 
-	| Empty 	
-	-> []
-	| Cons: "(" i:cons is:{ " " i':cons -> i'}* ")"
-		-> i *)
+(* Expression *)
+let parser expression =
+	| a:atom -> Atom(a)
+	| "'" e:expression -> Quote(expression)
+	| "(" es:expression* ")" -> Liste(es)
 
 (* Top level *)
 let parser prog = 
     | "(" name:string 
    		  args: {"(" i:ident is:{ "," i':ident -> i'}* ")"     -> i::is}?[[]]
-   		  body:expression 
+   		  body: expression 
    	   ")"
 		-> Def(name,args,body)
 
@@ -42,7 +37,16 @@ let parser prog =
 
 
 
+(* and expression_list =
+  EMPTY -> []
+| e:expression es:expression_list -> e::es *)
 
+(* List *)
+(* let parser cons = 
+	| Empty 	
+	-> []
+	| Cons: "(" i:cons is:{ " " i':cons -> i'}* ")"
+		-> i *)
 
 
 
