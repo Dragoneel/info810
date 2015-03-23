@@ -1,7 +1,8 @@
 open Ast
 
-
-let parser ident = i:''[a-zA-Z][a-zA-Z0-9]*'' -> {name=i}
+(* Identifiant *)
+(* let parser ident = i:''[a-zA-Z][a-zA-Z0-9]*'' -> {name=i} *)
+let parser ident = i:''[^^]*'' -> {name=i}
 
 (* Atom *)
 let parser atom = 
@@ -10,7 +11,7 @@ let parser atom =
 	|  integer: ''[0-9]+'' -> Integer(int_of_string(integer))
 	(* |  float: ''[-+]?[0-9]*\.?[0-9]*'' -> Float(float) *)
 
-(* Expression *)
+(* Expression *)		
 let parser expression =
 	| a:atom -> Atom(a)
 	| "'" e:expression -> Quote(e)
@@ -27,13 +28,16 @@ let parser instruction =
 		-> Def({name;params;body})
 
 (* Top level *)
-let parser programm = 
+let parser program	 = 
 	| inst:instruction*
 
 
-
-
-
+(* Testing the parser *)
+(* caractères blancs : espaces etc ... et # jusqu'à la fin de ligne *)
+let blank = Decap.blank_regexp ''\([ \t\n\r]*\|#[^\n]*\n\)*''
+let _ = Decap.handle_exception (fun () ->
+  let p = Decap.parse_channel program blank stdin in
+  Printf.printf "YOLO\n") ()
 
 
 

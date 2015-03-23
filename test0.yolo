@@ -1,1 +1,8 @@
+( set i 1 )
 ( print i )
+
+( set i '(1 2 3) )
+( print i )
+
+( set a 2 )
+( defun f (a) ( + a a ) ) )
