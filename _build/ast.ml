@@ -9,18 +9,25 @@ type atom =
 type expression = 
 	| Liste of expression list
 	| Atom of atom
-	| Quote of expression
-
-type def = { name : ident;     
-             params : ident list;
-             body: expression
-            }
+	| App of (expression * expression)
+	| Lambda of (ident * expression)
 
 type instruction = 
 	| Top_ls of expression
-	| Def of def
+	| Def of (ident * expression)
 
 type program = instruction list
+
+
+
+
+
+
+
+
+
+
+
 
 
 (* let sample = [

@@ -13,19 +13,31 @@ let parser atom =
 
 (* Expression *)		
 let parser expression =
+	
 	| a:atom -> Atom(a)
-	| "'" e:expression -> Quote(e)
+	(* | "'" e:expression -> Quote(e) *)
 	| "(" es:expression* ")" -> Liste(es)
+
+	| "(" e1:expression
+	  e2:expression  ")"
+	  -> App(e1,e2)
+	  
+	| "("id:ident 
+	  e:expression ")"
+	  -> Lambda(id,e)
 
 (* Instruction *)
 let parser instruction =
 	| ls:expression -> Top_ls(ls)
-	| "(" "defun"
+	| id:ident
+	  exp:expression  
+	  -> Def(id,exp)
+(* 	| "(" "defun"
     	  name: ident 
    		  "(" params:ident* ")"
    		  body: expression 
    	   ")"
-		-> Def({name;params;body})
+		-> Def({name;params;body}) *)
 
 (* Top level *)
 let parser program	 = 
@@ -37,7 +49,8 @@ let parser program	 =
 let blank = Decap.blank_regexp ''\([ \t\n\r]*\|#[^\n]*\n\)*''
 let _ = Decap.handle_exception (fun () ->
   let p = Decap.parse_channel program blank stdin in
-  Printf.printf "YOLO\n") ()
+  (* Printf.printf p *)
+  Printf.printf "YOSH\n") ()
 
 
 
