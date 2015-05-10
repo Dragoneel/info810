@@ -48,7 +48,7 @@ let parser program	 =
 (* caractères blancs : espaces etc ... et # jusqu'à la fin de ligne *)
 let blank = Decap.blank_regexp ''\([ \t\n\r]*\|#[^\n]*\n\)*''
 let _ = Decap.handle_exception (fun () ->
-  let p = Decap.parse_channel program blank stdin in
+  (* let p = Decap.parse_channel program blank stdin in *)
   (* Printf.printf p *)
   Printf.printf "YOSH\n") ()
 

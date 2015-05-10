@@ -21,15 +21,6 @@ type program = instruction list
 
 
 
-
-
-
-
-
-
-
-
-
 (* let sample = [
 				expression(
 						Liste(
